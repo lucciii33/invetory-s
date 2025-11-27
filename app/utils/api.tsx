@@ -257,4 +257,75 @@ El ego no se destruye, se reconoce.
     no todos viven buscando tu aprobación.
     Algunos simplemente están viviendo, y eso ya es suficiente.`,
   },
+  {
+    id: 6,
+    title: "¿Vas a Seguir Caminando con Zapatos que No Son Tuyos?",
+    image: "/images/shoes.png",
+    description: `¿Cuántas veces te has probado unos zapatos que te quedan… pero no te gustan?
+    No te duelen, pero tampoco te llevan lejos.
+    Son “de tu talla”, pero no son tuyos.
+
+    En la vida pasa igual.
+    Hay trabajos que te quedan, relaciones que te quedan, ciudades que te quedan…
+    pero no te hacen crecer.
+    No te mueven.
+    No te empujan.
+    Solo te mantienen ahí, en un punto muerto que parece seguro… pero te mata por dentro.
+
+    Y por algún motivo pensamos que “quedar” es suficiente.
+    Como si encajar fuera más importante que avanzar.
+    Como si la comodidad fuera un premio, cuando en realidad —muchas veces— es una trampa.
+
+    ¿De verdad quieres una vida donde todo “te quede bien”… pero nada te quede grande?
+    ¿Prefieres sentirte cómodo hoy, aunque eso signifique despertarte dentro de diez años con la sensación de que tu vida no se parece en nada a la que soñabas?
+
+    Porque sí, perseguir tus metas incomoda.
+    Crecer incomoda.
+    Cambiar incomoda.
+    Y a veces duele.
+    Pero también te libera.
+    Te mueve.
+    Te despierta.
+
+    Y tú lo sabes.
+
+    Lo peor es que todos opinan.
+    Todo el mundo tiene “consejos”.
+    Consejos reciclados, vacíos, repetidos…
+    como si la vida tuviera una sola receta.
+    Como si la experiencia de los demás fuera un mapa perfecto para la tuya.
+    Pero no lo es.
+    Nunca lo será.
+    Ni aunque repitas los mismos pasos, ni aunque uses los mismos ingredientes.
+    La vida no responde a fórmulas: responde a la valentía.
+
+    Y aun así escuchamos más a gente que nos limita… que a nuestra propia intuición.
+    Le damos más poder a un manipulador que nos corta las alas… que a nuestros propios sueños.
+    Nos quedamos en lugares que no nos gustan porque alguien nos convenció de que salir es peligroso.
+    Nos aferramos a lo conocido aunque lo conocido nos destruya lento.
+
+    ¿Y todo por qué?
+    Por miedo.
+    Miedo al fracaso.
+    Miedo a equivocarnos.
+    Miedo a lo que pueda pensar alguien que ni siquiera vive nuestra vida.
+
+    Pero te digo algo que nadie te dice:
+    El miedo también tiene talla. Y la tuya ya te quedó pequeña.
+
+    A veces lo que más temes perder es precisamente lo que te está hundiendo.
+    A veces la incomodidad que tanto evitas es el puente hacia la vida que sí es para ti.
+    A veces el fracaso que te da pánico es el empujón que te faltaba para encontrarte contigo mismo.
+
+    Entonces dime:
+    ¿De verdad vas a seguir caminando con unos zapatos que no son tuyos?
+    ¿Vas a quedarte donde no quieres solo porque no sabes decir adiós?
+    ¿Vas a dejar que el miedo decida tu vida… cuando tú naciste para decidir tu camino?
+
+    La comodidad no te construye.
+    La incomodidad sí.
+    El miedo no te guía.
+    El coraje sí.
+    El resto es solo ruido.`,
+  },
 ];
