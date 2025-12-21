@@ -328,4 +328,162 @@ El ego no se destruye, se reconoce.
     El coraje sí.
     El resto es solo ruido.`,
   },
+
+  {
+    id: 7,
+    title: "El ruido de los que no se miran por dentro",
+    image: "/images/ruido7.png",
+    description: `Empieza a incomodarme la gente que critica o recalca cosas negativas sobre mí sin mirarse a sí misma.
+    Te molesta lo que hago, pero ¿te has puesto a pensar que quizá te molesta porque tú haces algo que a mí también me incomoda… y yo simplemente no le doy importancia y tomo otro camino?
+
+    Tú te acostumbraste a mirar piedras pequeñas, y yo no me freno por ninguna en el mío.
+    Y entonces, ¿eres lo suficientemente inmaduro y mentiroso contigo mismo como para molestarte si yo me tomo la molestia de recalcarte por qué mis acciones fueron así?
+    Claro, ahora duele, porque tú nunca miraste hacia dentro y tuvo que decírtelo otra persona.
+
+    Y este es el mismo tipo de personas que dicen que van a hacer algo y no lo hacen, que le echan la culpa a los demás por sus cagadas, que no tienen el poder mental de asimilar las cosas aunque duelan. Personas que no son sinceras consigo mismas.
+    No les gusta su trabajo, pero se quedan estancados ahí por miedo.
+    No les gusta su pareja, pero prefieren pasarla mal antes que los días o meses que puedan volver a estar solos.
+
+    Se mienten a sí mismos.
+    Por eso no pueden ver sus errores y pierden el tiempo señalando los defectos de los demás.
+    De nosotros, que sí trabajamos en nuestros problemas, que sí enfrentamos las cosas aunque duelan, que sí nos damos el tiempo de sentir lo malo y lo bueno.
+
+    Y la verdad es que ya me tienen cansado.
+
+    ¿Que tengo problemas? Sí, como todos.
+    ¿No te gustan? Es tu problema.
+    Yo no recalco tus problemas porque a mí, directamente, no me incomodan.
+    A ti, como todo te incomoda por dentro, intentas arreglarlo con cosas externas. Y te digo algo: no vas a poder.
+
+    Porque algunos somos lo suficientemente inteligentes como para no entrar en confrontaciones.
+    Y no porque no seas importante, sino porque yo siempre me pongo primero ante todo.
+
+    ¿Que soy un ególatra?
+    Pues yo creo que el ególatra eres tú.
+    Tu ego no te deja ver tus defectos ni entender por qué yo actúo de cierta manera.
+
+    ¿Que soy egoísta?
+    Egoísta no creo que sea la persona que te quiere como eres sin recalcar tanta mierda.
+
+    Pero ahí entras tú.
+
+    Yo solo camino.
+    Me voy quitando lo que me molesta.
+    ¿Voy solo? Sí. Y disfruto mi camino solo, porque la carga ajena no sirve más que para incomodarte.
+
+    Por eso no le respondo al compañero que solo escribe cuando necesita algo.
+    Por eso no comparto con quien no tiene metas tan grandes como las mías.
+    Por eso no pido consejo a quien no está donde yo quiero estar o no vive de lo que yo quiero vivir.
+
+    Un consejo de vida se lo pido a un viejo, no a un niño.
+    El niño me enseña algo, lo agradezco y lo guardo.
+
+    Si estoy en la industria tech, ¿por qué pedirle consejo a alguien que vive de una industria totalmente diferente?
+    Una cosa es aprender de una persona y otra muy distinta es seguir pasos a ciegas de alguien que supone cómo podrían ser las cosas.
+
+    La vida me ha enseñado que ser lógico no significa tener razón al 100%.
+    Ser lógico te pone en medio de lo negativo y lo positivo, pero no necesariamente te dice cómo el problema o la industria funcionan en realidad.
+
+    Así que, gente: si criticas tanto, deberías mirarte en el espejo.
+    Pero no lo haces porque no tienes los cojones de ver la basura que pasa dentro de ti, porque ni tú mismo te soportas.
+
+    Deberías pensar por qué la gente actúa como actúa y preguntarte si estás 100% seguro de que tú no eres el problema.
+
+    Porque siempre, siempre, siempre, el narcisista piensa que el mundo gira en torno a él.
+    Y no gira en torno a ti, amigo mío.
+    El mundo gira y gira sin parar…
+    pero tú no eres su mayor importancia.`,
+  },
+  {
+    id: 8,
+    title: "No estás solo: estás vacío (y no es lo mismo)",
+    image: "/images/ruido8.png",
+    description: `El amor.
+
+    Tú no estás listo para el amor.
+
+    Porque si no te quieres a ti, siempre te vas a sentir solo.
+    Si no te entiendes, no sabes qué es bueno ni qué es malo para ti.
+    Si no te valoras y no te pones primero, nadie te va a respetar.
+
+    Encontrar a alguien no es difícil.
+    Lo difícil es que esa persona encaje con tu vida, con tus planes y con la manera en la que ves el mundo.
+
+    Y cada vez lo veo más claro:
+    la gente se queda con cualquier cosa por miedo a estar sola.
+
+    Ni siquiera te conoces.
+    No sabes cómo eres, no sabes qué quieres, no te entiendes, no te valoras.
+    Pero aun así buscas a alguien que te complete.
+
+    Ves películas románticas, idealizas historias y luego quieres forzar eso en la vida real.
+    ¿Con quién sea?
+    ¿Aunque sea alguien tóxico?
+    ¿Aunque tengas que repetir constantemente: “es que debe cambiar algunas cosas”?
+
+    Eso no es amor.
+    Eso es vacío.
+    Y cuando hay vacío, se acepta cualquier cosa para llenarlo.
+
+    Mi consejo es simple:
+    pasa tiempo contigo mismo.
+    Aprende a estar solo.
+    Quiérete.
+    Eso, aunque no lo entiendas, es atractivo de verdad.
+
+    “No es que yo sea mejor que tú.
+    Es que estoy en otro punto.”
+
+    “Mientras tú buscas distracciones, validación o compañía para no pensar,
+    yo prefiero invertir tiempo en mí, en mi cabeza y en mi futuro.”
+
+    ¿Estás solo? Sí.
+    Pero tranquilo.
+    Con dirección, con foco, con estabilidad.
+    Sin eso no puedes construir una relación, amigo mío.
+    Sin eso no puedes hacer planes.
+
+    No buscas llenar noches, buscas construir días.
+    No buscas ruido, buscas claridad. Recuérdalo.
+
+    Y eso implica elegir con quién compartes tu tiempo
+    y a quién escuchas.
+
+    Una relación no es siempre 50/50.
+    A veces uno da más.
+    A veces el otro.
+    Pero para que funcione, los dos tienen que estar trabajando en sí mismos.
+
+    Tú no.
+    Tú te conformaste con lo primero que llegó para no sentirte solo.
+    Y por eso siempre estás intentando cambiar a la otra persona.
+
+    “Es que no piensa como yo.”
+    Entonces, ¿por qué sigues ahí?
+
+    “Es que me gusta, pero hay cosas que no.”
+    Entonces no es ahí.
+
+    “Es que se disculpa.”
+    Las disculpas sin cambios no valen nada.
+    El vaso lleno de curitas igual se le sale el agua; tú eres el agua, @l debería ser el vaso seguro.
+    Las acciones son las que hablan.
+
+    Y esto es lo que no quieres aceptar:
+    no quieres una relación.
+    Quieres experiencias bonitas para tapar carencias internas.
+
+    Y eso no funciona.
+
+    Las relaciones reales no se improvisan.
+    No se fuerzan.
+    No se usan como muletas emocionales.
+
+    Se construyen entre personas que saben quiénes son,
+    qué merecen
+    y qué no están dispuestas a tolerar.
+
+    Y mientras no hagas ese trabajo contigo,
+    no estás listo para el amor.`,
+  },
 ];
