@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
+
 import { AuthApi } from "~/api/authApi";
 
 export default function LoginForm() {
   const authApi = AuthApi();
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -21,6 +24,7 @@ export default function LoginForm() {
     try {
       const data = await authApi.login(formData);
       console.log("Usuario autenticado:", data);
+      navigate(`dashboard/${data._id}`);
     } catch (error) {
       console.error("Error al iniciar sesión:", error);
     }
