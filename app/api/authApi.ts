@@ -50,6 +50,8 @@ export function AuthApi() {
       if (!response.ok) throw new Error("Credenciales incorrectas");
 
       const data: RegisterResponse = await response.json();
+      localStorage.setItem("user2", JSON.stringify(data)); 
+
       setState({ loading: false, error: null, data });
       return data;
     } catch (error) {

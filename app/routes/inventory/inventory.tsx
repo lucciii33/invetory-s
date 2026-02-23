@@ -1,88 +1,95 @@
 import { Link, useNavigate } from "react-router";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { UseInventoryApi } from "~/api/inventoryApi";
+import { getAuthUser } from "auth";
 
-const mockInventory = [
-  {
-    _id: "1",
-    name: "Laptop Dell XPS 15",
-    sku: "DELL-XPS-001",
-    quantity: 12,
-    minimumStock: 5,
-    unit: "unit",
-    costPrice: 1200,
-    salePrice: 1599,
-    currency: "USD",
-    location: "Warehouse A / Shelf 1",
-    supplier: "Dell Inc.",
-    isActive: true,
-    expirationDate: null,
-  },
-  {
-    _id: "2",
-    name: "Cable HDMI 2m",
-    sku: "CAB-HDMI-002",
-    quantity: 3,
-    minimumStock: 10,
-    unit: "unit",
-    costPrice: 8,
-    salePrice: 15,
-    currency: "USD",
-    location: "Warehouse B / Shelf 4",
-    supplier: "CableCo",
-    isActive: true,
-    expirationDate: null,
-  },
-  {
-    _id: "3",
-    name: "Papel Bond A4",
-    sku: "PAP-A4-003",
-    quantity: 200,
-    minimumStock: 50,
-    unit: "box",
-    costPrice: 5,
-    salePrice: 9,
-    currency: "USD",
-    location: "Warehouse A / Shelf 2",
-    supplier: "OfficeMax",
-    isActive: true,
-    expirationDate: "2026-12-01",
-  },
-  {
-    _id: "4",
-    name: "Aceite de Motor 5W-30",
-    sku: "ACE-MOT-004",
-    quantity: 0,
-    minimumStock: 20,
-    unit: "liter",
-    costPrice: 12,
-    salePrice: 22,
-    currency: "USD",
-    location: "Warehouse C / Shelf 1",
-    supplier: "Mobil",
-    isActive: false,
-    expirationDate: "2025-06-01",
-  },
-  {
-    _id: "5",
-    name: "Teclado Mecánico RGB",
-    sku: "TEC-MEC-005",
-    quantity: 8,
-    minimumStock: 3,
-    unit: "unit",
-    costPrice: 45,
-    salePrice: 89,
-    currency: "USD",
-    location: "Warehouse A / Shelf 3",
-    supplier: "Corsair",
-    isActive: true,
-    expirationDate: null,
-  },
-];
+// const mockInventory = [
+//   {
+//     _id: "1",
+//     name: "Laptop Dell XPS 15",
+//     sku: "DELL-XPS-001",
+//     quantity: 12,
+//     minimumStock: 5,
+//     unit: "unit",
+//     costPrice: 1200,
+//     salePrice: 1599,
+//     currency: "USD",
+//     location: "Warehouse A / Shelf 1",
+//     supplier: "Dell Inc.",
+//     isActive: true,
+//     expirationDate: null,
+//   },
+//   {
+//     _id: "2",
+//     name: "Cable HDMI 2m",
+//     sku: "CAB-HDMI-002",
+//     quantity: 3,
+//     minimumStock: 10,
+//     unit: "unit",
+//     costPrice: 8,
+//     salePrice: 15,
+//     currency: "USD",
+//     location: "Warehouse B / Shelf 4",
+//     supplier: "CableCo",
+//     isActive: true,
+//     expirationDate: null,
+//   },
+//   {
+//     _id: "3",
+//     name: "Papel Bond A4",
+//     sku: "PAP-A4-003",
+//     quantity: 200,
+//     minimumStock: 50,
+//     unit: "box",
+//     costPrice: 5,
+//     salePrice: 9,
+//     currency: "USD",
+//     location: "Warehouse A / Shelf 2",
+//     supplier: "OfficeMax",
+//     isActive: true,
+//     expirationDate: "2026-12-01",
+//   },
+//   {
+//     _id: "4",
+//     name: "Aceite de Motor 5W-30",
+//     sku: "ACE-MOT-004",
+//     quantity: 0,
+//     minimumStock: 20,
+//     unit: "liter",
+//     costPrice: 12,
+//     salePrice: 22,
+//     currency: "USD",
+//     location: "Warehouse C / Shelf 1",
+//     supplier: "Mobil",
+//     isActive: false,
+//     expirationDate: "2025-06-01",
+//   },
+//   {
+//     _id: "5",
+//     name: "Teclado Mecánico RGB",
+//     sku: "TEC-MEC-005",
+//     quantity: 8,
+//     minimumStock: 3,
+//     unit: "unit",
+//     costPrice: 45,
+//     salePrice: 89,
+//     currency: "USD",
+//     location: "Warehouse A / Shelf 3",
+//     supplier: "Corsair",
+//     isActive: true,
+//     expirationDate: null,
+//   },
+// ];
 
 export default function Inventory() {
   const [search, setSearch] = useState("");
+  const { getInventoryByUserId, loading, data } = UseInventoryApi();
+  useEffect(() => {
+    const id = getAuthUser();
+    getInventoryByUserId(id);
+  }, []);
 
-  const filtered = mockInventory.filter(
+  const filtered = data.filter(
     (item) =>
       item.name.toLowerCase().includes(search.toLowerCase()) ||
       item.sku.toLowerCase().includes(search.toLowerCase()),
@@ -131,7 +138,7 @@ export default function Inventory() {
               Inventario
             </h1>
             <p className="text-white/40 text-sm mt-1 font-light">
-              {mockInventory.length} productos registrados
+              {data.length} productos registrados
             </p>
           </div>
 
@@ -264,7 +271,7 @@ export default function Inventory() {
 
         {/* Footer count */}
         <p className="text-xs text-white/20 mt-4 text-right">
-          Mostrando {filtered.length} de {mockInventory.length} productos
+          Mostrando {filtered.length} de {data.length} productos
         </p>
       </div>
     </main>
