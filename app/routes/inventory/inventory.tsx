@@ -2,88 +2,17 @@ import { Link, useNavigate } from "react-router";
 import { useEffect, useState } from "react";
 import { UseInventoryApi } from "~/api/inventoryApi";
 import { getAuthUser } from "auth";
-
-// const mockInventory = [
-//   {
-//     _id: "1",
-//     name: "Laptop Dell XPS 15",
-//     sku: "DELL-XPS-001",
-//     quantity: 12,
-//     minimumStock: 5,
-//     unit: "unit",
-//     costPrice: 1200,
-//     salePrice: 1599,
-//     currency: "USD",
-//     location: "Warehouse A / Shelf 1",
-//     supplier: "Dell Inc.",
-//     isActive: true,
-//     expirationDate: null,
-//   },
-//   {
-//     _id: "2",
-//     name: "Cable HDMI 2m",
-//     sku: "CAB-HDMI-002",
-//     quantity: 3,
-//     minimumStock: 10,
-//     unit: "unit",
-//     costPrice: 8,
-//     salePrice: 15,
-//     currency: "USD",
-//     location: "Warehouse B / Shelf 4",
-//     supplier: "CableCo",
-//     isActive: true,
-//     expirationDate: null,
-//   },
-//   {
-//     _id: "3",
-//     name: "Papel Bond A4",
-//     sku: "PAP-A4-003",
-//     quantity: 200,
-//     minimumStock: 50,
-//     unit: "box",
-//     costPrice: 5,
-//     salePrice: 9,
-//     currency: "USD",
-//     location: "Warehouse A / Shelf 2",
-//     supplier: "OfficeMax",
-//     isActive: true,
-//     expirationDate: "2026-12-01",
-//   },
-//   {
-//     _id: "4",
-//     name: "Aceite de Motor 5W-30",
-//     sku: "ACE-MOT-004",
-//     quantity: 0,
-//     minimumStock: 20,
-//     unit: "liter",
-//     costPrice: 12,
-//     salePrice: 22,
-//     currency: "USD",
-//     location: "Warehouse C / Shelf 1",
-//     supplier: "Mobil",
-//     isActive: false,
-//     expirationDate: "2025-06-01",
-//   },
-//   {
-//     _id: "5",
-//     name: "Teclado Mecánico RGB",
-//     sku: "TEC-MEC-005",
-//     quantity: 8,
-//     minimumStock: 3,
-//     unit: "unit",
-//     costPrice: 45,
-//     salePrice: 89,
-//     currency: "USD",
-//     location: "Warehouse A / Shelf 3",
-//     supplier: "Corsair",
-//     isActive: true,
-//     expirationDate: null,
-//   },
-// ];
+import DeleteConfirmModal from "~/comp/DeleteConfirmModal";
 
 export default function Inventory() {
   const [search, setSearch] = useState("");
-  const { getInventoryByUserId, loading, data } = UseInventoryApi();
+  const { getInventoryByUserId, loading, data, deleteInventoryItem } =
+    UseInventoryApi();
+  const [deleteTarget, setDeleteTarget] = useState<{
+    id: string;
+    name: string;
+  } | null>(null);
+
   useEffect(() => {
     const id = getAuthUser();
     getInventoryByUserId(id);
@@ -95,6 +24,16 @@ export default function Inventory() {
       item.sku.toLowerCase().includes(search.toLowerCase()),
   );
   const navigate = useNavigate();
+
+  const removeItem = async (id: string) => {
+    if (!deleteTarget) return;
+    try {
+      await deleteInventoryItem(deleteTarget.id);
+      setDeleteTarget(null);
+    } catch (err) {
+      console.error(err);
+    }
+  };
   return (
     <main className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
       {/* Blobs */}
@@ -155,7 +94,7 @@ export default function Inventory() {
         {/* Table */}
         <div className="rounded-2xl border border-white/[0.08] overflow-hidden">
           {/* Table header */}
-          <div className="grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_1fr] bg-white/[0.03] border-b border-white/[0.06] px-6 py-3">
+          <div className="group grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_1fr_0.5fr] bg-white/[0.03] border-b border-white/[0.06] px-6 py-3">
             {[
               "Producto",
               "SKU",
@@ -164,6 +103,7 @@ export default function Inventory() {
               "Precio Venta",
               "Ubicación",
               "Estado",
+              "Acciones",
             ].map((col) => (
               <span
                 key={col}
@@ -187,7 +127,7 @@ export default function Inventory() {
               return (
                 <div
                   key={item._id}
-                  className="group grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_1fr] px-6 py-4 border-b border-white/[0.04] hover:bg-white/[0.03] transition-colors duration-200 cursor-pointer"
+                  className="group grid grid-cols-[2fr_1fr_1fr_1fr_1fr_1fr_1fr_0.5fr] px-6 py-4 border-b border-white/[0.04] hover:bg-white/[0.03] transition-colors duration-200 cursor-pointer"
                 >
                   {/* Nombre */}
                   <div>
@@ -263,6 +203,32 @@ export default function Inventory() {
                       {item.isActive ? "Activo" : "Inactivo"}
                     </span>
                   </div>
+
+                  <div className="flex items-center gap-2">
+                    <div>
+                      <Link
+                        to={`/inventory/${item._id}`}
+                        className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+                      >
+                        Editar
+                      </Link>
+                    </div>
+                    <div
+                      className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+                      onClick={() =>
+                        setDeleteTarget({ id: item._id, name: item.name })
+                      }
+                    >
+                      Delete
+                    </div>
+                  </div>
+                  {deleteTarget && (
+                    <DeleteConfirmModal
+                      itemName={deleteTarget.name}
+                      onConfirm={removeItem}
+                      onCancel={() => setDeleteTarget(null)}
+                    />
+                  )}
                 </div>
               );
             })
