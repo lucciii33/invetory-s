@@ -1,126 +1,10 @@
-import { Link } from "react-router";
-import { useState } from "react";
-
-const mockOrders = [
-  {
-    _id: "1",
-    orderNumber: "ORD-0001",
-    customer: {
-      name: "Carlos Méndez",
-      email: "carlos@gmail.com",
-      phone: "+1 555-0101",
-    },
-    items: [
-      {
-        product: "Laptop Dell XPS 15",
-        quantity: 1,
-        unitPrice: 1599,
-        subtotal: 1599,
-      },
-      { product: "Cable HDMI 2m", quantity: 2, unitPrice: 15, subtotal: 30 },
-    ],
-    status: "accepted",
-    inventoryDeducted: true,
-    total: 1629,
-    currency: "USD",
-    notes: "Entregar en oficina",
-    createdAt: "2024-01-15",
-  },
-  {
-    _id: "2",
-    orderNumber: "ORD-0002",
-    customer: {
-      name: "María González",
-      email: "maria@empresa.com",
-      phone: "+1 555-0102",
-    },
-    items: [
-      {
-        product: "Teclado Mecánico RGB",
-        quantity: 3,
-        unitPrice: 89,
-        subtotal: 267,
-      },
-    ],
-    status: "pending",
-    inventoryDeducted: false,
-    total: 267,
-    currency: "USD",
-    notes: "",
-    createdAt: "2024-01-16",
-  },
-  {
-    _id: "3",
-    orderNumber: "ORD-0003",
-    customer: {
-      name: "Pedro Ramírez",
-      email: "pedro@correo.com",
-      phone: "+1 555-0103",
-    },
-    items: [
-      { product: "Papel Bond A4", quantity: 10, unitPrice: 9, subtotal: 90 },
-      {
-        product: "Aceite de Motor 5W-30",
-        quantity: 5,
-        unitPrice: 22,
-        subtotal: 110,
-      },
-    ],
-    status: "cancelled",
-    inventoryDeducted: false,
-    total: 200,
-    currency: "USD",
-    notes: "Cliente canceló por demora",
-    createdAt: "2024-01-17",
-  },
-  {
-    _id: "4",
-    orderNumber: "ORD-0004",
-    customer: {
-      name: "Ana Torres",
-      email: "ana@shop.com",
-      phone: "+1 555-0104",
-    },
-    items: [
-      {
-        product: "Laptop Dell XPS 15",
-        quantity: 2,
-        unitPrice: 1599,
-        subtotal: 3198,
-      },
-    ],
-    status: "pending",
-    inventoryDeducted: false,
-    total: 3198,
-    currency: "USD",
-    notes: "",
-    createdAt: "2024-01-18",
-  },
-  {
-    _id: "5",
-    orderNumber: "ORD-0005",
-    customer: {
-      name: "Luis Castillo",
-      email: "luis@ventas.com",
-      phone: "+1 555-0105",
-    },
-    items: [
-      {
-        product: "Teclado Mecánico RGB",
-        quantity: 1,
-        unitPrice: 89,
-        subtotal: 89,
-      },
-      { product: "Cable HDMI 2m", quantity: 4, unitPrice: 15, subtotal: 60 },
-    ],
-    status: "accepted",
-    inventoryDeducted: true,
-    total: 149,
-    currency: "USD",
-    notes: "",
-    createdAt: "2024-01-19",
-  },
-];
+import { Link, useNavigate } from "react-router";
+import { useEffect, useState } from "react";
+import { UseOrdersApi } from "~/api/ordersApi";
+import { UseInventoryApi } from "~/api/inventoryApi";
+import { getAuthUser } from "auth";
+import DeleteConfirmModal from "~/comp/DeleteConfirmModal";
+import CreateOrderModal from "~/comp/CreateOrderModal";
 
 const statusConfig = {
   pending: {
@@ -140,15 +24,48 @@ const statusConfig = {
 export default function Orders() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
-  const [expanded, setExpanded] = useState<string | null>(null);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<{
+    id: string;
+    orderNumber: string;
+  } | null>(null);
 
-  const filtered = mockOrders.filter((o) => {
+  const {
+    getOrdersByUserId,
+    deleteOrder,
+    createOrder,
+    loading,
+    mutating,
+    data: orders,
+  } = UseOrdersApi();
+
+  const { getInventoryByUserId, data: inventoryItems } = UseInventoryApi();
+
+  useEffect(() => {
+    const id = getAuthUser();
+    getOrdersByUserId(id);
+    getInventoryByUserId(id);
+  }, []);
+
+  const filtered = orders.filter((o) => {
     const matchSearch =
-      o.orderNumber.toLowerCase().includes(search.toLowerCase()) ||
-      o.customer.name.toLowerCase().includes(search.toLowerCase());
+      o.orderNumber?.toLowerCase().includes(search.toLowerCase()) ||
+      o.customer?.name?.toLowerCase().includes(search.toLowerCase());
     const matchStatus = statusFilter === "all" || o.status === statusFilter;
     return matchSearch && matchStatus;
   });
+
+  const navigate = useNavigate();
+
+  const handleDelete = async () => {
+    if (!deleteTarget) return;
+    try {
+      await deleteOrder(deleteTarget.id);
+      setDeleteTarget(null);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   return (
     <main className="min-h-screen bg-[#0a0a0f] text-white relative overflow-hidden">
@@ -170,7 +87,10 @@ export default function Orders() {
             inventory<span className="text-white/25">·s</span>
           </span>
         </div>
-        <button className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/25 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all duration-300 cursor-pointer">
+        <button
+          onClick={() => setShowCreateModal(true)}
+          className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/25 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all duration-300 cursor-pointer"
+        >
           <span className="text-lg leading-none">+</span>
           Nueva orden
         </button>
@@ -187,7 +107,7 @@ export default function Orders() {
               Mis Órdenes
             </h1>
             <p className="text-white/40 text-sm mt-1 font-light">
-              {mockOrders.length} órdenes en total
+              {orders.length} órdenes en total
             </p>
           </div>
 
@@ -225,135 +145,150 @@ export default function Orders() {
         {/* Tabla */}
         <div className="rounded-2xl border border-white/[0.08] overflow-hidden">
           {/* Header */}
-          <div className="grid grid-cols-[1fr_2fr_1fr_1fr_1fr_1fr] bg-white/[0.03] border-b border-white/[0.06] px-6 py-3">
-            {["# Orden", "Cliente", "Items", "Total", "Estado", "Fecha"].map(
-              (col) => (
-                <span
-                  key={col}
-                  className="text-[11px] font-medium tracking-[0.1em] uppercase text-white/30"
-                >
-                  {col}
-                </span>
-              ),
-            )}
+          <div className="grid grid-cols-[1fr_2fr_1fr_1fr_1fr_1fr_0.6fr] bg-white/[0.03] border-b border-white/[0.06] px-6 py-3">
+            {[
+              "# Orden",
+              "Cliente",
+              "Items",
+              "Total",
+              "Estado",
+              "Fecha",
+              "Acciones",
+            ].map((col) => (
+              <span
+                key={col}
+                className="text-[11px] font-medium tracking-[0.1em] uppercase text-white/30"
+              >
+                {col}
+              </span>
+            ))}
           </div>
 
-          {/* Rows */}
-          {filtered.length === 0 ? (
+          {/* Loading */}
+          {loading ? (
+            <div className="text-center py-16 text-white/25 text-sm">
+              Cargando...
+            </div>
+          ) : filtered.length === 0 ? (
             <div className="text-center py-16 text-white/25 text-sm">
               No se encontraron órdenes
             </div>
           ) : (
             filtered.map((order) => (
-              <div key={order._id}>
-                {/* Fila principal */}
-                <div
-                  onClick={() =>
-                    setExpanded(expanded === order._id ? null : order._id)
-                  }
-                  className="group grid grid-cols-[1fr_2fr_1fr_1fr_1fr_1fr] px-6 py-4 border-b border-white/[0.04] hover:bg-white/[0.03] transition-colors duration-200 cursor-pointer"
-                >
-                  {/* Número */}
-                  <div className="flex items-center">
-                    <span className="text-xs font-mono bg-white/[0.05] border border-white/[0.08] px-2 py-1 rounded-lg text-white/60">
-                      {order.orderNumber}
-                    </span>
-                  </div>
+              <div
+                key={order._id}
+                className="group grid grid-cols-[1fr_2fr_1fr_1fr_1fr_1fr_0.6fr] px-6 py-4 border-b border-white/[0.04] hover:bg-white/[0.03] transition-colors duration-200 cursor-pointer"
+                onClick={() => navigate(`/orders/${order._id}`)}
+              >
+                {/* Número */}
+                <div className="flex items-center">
+                  <span className="text-xs font-mono bg-white/[0.05] border border-white/[0.08] px-2 py-1 rounded-lg text-white/60">
+                    {order.orderNumber}
+                  </span>
+                </div>
 
-                  {/* Cliente */}
-                  <div className="flex flex-col justify-center">
-                    <p className="text-sm font-medium text-white group-hover:text-teal-300 transition-colors">
-                      {order.customer.name}
-                    </p>
+                {/* Cliente */}
+                <div className="flex flex-col justify-center">
+                  <p className="text-sm font-medium text-white group-hover:text-teal-300 transition-colors">
+                    {order.customer.name}
+                  </p>
+                  {order.customer.email && (
                     <p className="text-xs text-white/30 mt-0.5">
                       {order.customer.email}
                     </p>
-                  </div>
-
-                  {/* Items count */}
-                  <div className="flex items-center">
-                    <span className="text-sm text-white/50">
-                      {order.items.length}{" "}
-                      {order.items.length === 1 ? "producto" : "productos"}
-                    </span>
-                  </div>
-
-                  {/* Total */}
-                  <div className="flex items-center">
-                    <span className="text-sm font-semibold text-white">
-                      {order.currency}{" "}
-                      {order.total.toLocaleString("en-US", {
-                        minimumFractionDigits: 2,
-                      })}
-                    </span>
-                  </div>
-
-                  {/* Status */}
-                  <div className="flex items-center">
-                    <span
-                      className={`text-[11px] font-medium px-2.5 py-1 rounded-full border ${statusConfig[order.status as keyof typeof statusConfig].classes}`}
-                    >
-                      {
-                        statusConfig[order.status as keyof typeof statusConfig]
-                          .label
-                      }
-                    </span>
-                  </div>
-
-                  {/* Fecha */}
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs text-white/30 font-light">
-                      {order.createdAt}
-                    </span>
-                    <span
-                      className={`text-white/30 text-xs transition-transform duration-200 ${expanded === order._id ? "rotate-180" : ""}`}
-                    >
-                      ▾
-                    </span>
-                  </div>
+                  )}
                 </div>
 
-                {/* Expandido: detalle items */}
-                {expanded === order._id && (
-                  <div className="bg-white/[0.02] border-b border-white/[0.04] px-16 py-4">
-                    <p className="text-[11px] uppercase tracking-widest text-white/25 mb-3">
-                      Detalle de productos
-                    </p>
-                    <div className="flex flex-col gap-2">
-                      {order.items.map((item, i) => (
-                        <div
-                          key={i}
-                          className="flex items-center justify-between text-sm"
-                        >
-                          <span className="text-white/60">{item.product}</span>
-                          <div className="flex items-center gap-6 text-white/40 text-xs">
-                            <span>
-                              {item.quantity} × {order.currency}{" "}
-                              {item.unitPrice}
-                            </span>
-                            <span className="text-white/70 font-medium">
-                              {order.currency} {item.subtotal}
-                            </span>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                    {order.notes && (
-                      <p className="text-xs text-white/25 mt-3 italic">
-                        📝 {order.notes}
-                      </p>
-                    )}
-                  </div>
-                )}
+                {/* Items count */}
+                <div className="flex items-center">
+                  <span className="text-sm text-white/50">
+                    {order.items.length}{" "}
+                    {order.items.length === 1 ? "producto" : "productos"}
+                  </span>
+                </div>
+
+                {/* Total */}
+                <div className="flex items-center">
+                  <span className="text-sm font-semibold text-white">
+                    {order.currency}{" "}
+                    {order.total.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                    })}
+                  </span>
+                </div>
+
+                {/* Status */}
+                <div className="flex items-center">
+                  <span
+                    className={`text-[11px] font-medium px-2.5 py-1 rounded-full border ${statusConfig[order.status].classes}`}
+                  >
+                    {statusConfig[order.status].label}
+                  </span>
+                </div>
+
+                {/* Fecha */}
+                <div className="flex items-center">
+                  <span className="text-xs text-white/30 font-light">
+                    {new Date(order.createdAt).toLocaleDateString("es", {
+                      day: "2-digit",
+                      month: "short",
+                      year: "numeric",
+                    })}
+                  </span>
+                </div>
+
+                {/* Acciones */}
+                <div
+                  className="flex items-center gap-3"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <Link
+                    to={`/orders/${order._id}`}
+                    className="text-xs text-indigo-400 hover:text-indigo-300 transition-colors"
+                  >
+                    Ver
+                  </Link>
+                  <button
+                    onClick={() =>
+                      setDeleteTarget({
+                        id: order._id,
+                        orderNumber: order.orderNumber,
+                      })
+                    }
+                    className="text-xs text-white/25 hover:text-red-400 transition-colors cursor-pointer"
+                  >
+                    Eliminar
+                  </button>
+                </div>
               </div>
             ))
           )}
         </div>
 
         <p className="text-xs text-white/20 mt-4 text-right">
-          Mostrando {filtered.length} de {mockOrders.length} órdenes
+          Mostrando {filtered.length} de {orders.length} órdenes
         </p>
       </div>
+
+      {/* Create modal */}
+      {showCreateModal && (
+        <CreateOrderModal
+          inventoryItems={inventoryItems}
+          ownerId={getAuthUser()}
+          mutating={mutating}
+          onClose={() => setShowCreateModal(false)}
+          onSubmit={createOrder}
+        />
+      )}
+
+      {/* Delete modal */}
+      {deleteTarget && (
+        <DeleteConfirmModal
+          itemName={deleteTarget.orderNumber}
+          onConfirm={handleDelete}
+          onCancel={() => setDeleteTarget(null)}
+        />
+      )}
     </main>
   );
 }

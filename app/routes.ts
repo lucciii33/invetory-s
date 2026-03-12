@@ -8,7 +8,5 @@ export default [
   route("inventory/create", "routes/inventory/createInventory.tsx"),
   route("inventory/:id", "routes/inventory/inventory.$id.tsx"),
   route("orders", "routes/orders/orders.tsx"),
-
-
-  // route("orders/:id", "routes/orders/orders.$id.tsx"),
+  route("orders/:id", "routes/orders/orders.$id.tsx"),
 ] satisfies RouteConfig;
