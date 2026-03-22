@@ -15,6 +15,14 @@ const statusConfig = {
     label: "Aceptada",
     classes: "bg-teal-500/10 text-teal-400 border-teal-500/20",
   },
+  active: {
+    label: "Activa",
+    classes: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20",
+  },
+  delivered: {
+    label: "Entregada",
+    classes: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+  },
   cancelled: {
     label: "Cancelada",
     classes: "bg-red-500/10 text-red-400 border-red-500/20",
@@ -24,6 +32,16 @@ const statusConfig = {
 export default function Orders() {
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
+  const [linkCopied, setLinkCopied] = useState(false);
+
+  const copyStoreLink = () => {
+    const userId = getAuthUser();
+    const link = `${window.location.origin}/store/${userId}`;
+    navigator.clipboard.writeText(link).then(() => {
+      setLinkCopied(true);
+      setTimeout(() => setLinkCopied(false), 2000);
+    });
+  };
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [deleteTarget, setDeleteTarget] = useState<{
     id: string;
@@ -87,13 +105,24 @@ export default function Orders() {
             inventory<span className="text-white/25">·s</span>
           </span>
         </div>
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/25 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all duration-300 cursor-pointer"
-        >
-          <span className="text-lg leading-none">+</span>
-          Nueva orden
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={copyStoreLink}
+            className="flex items-center gap-2 bg-white/[0.03] hover:bg-white/[0.07] border border-white/[0.08] hover:border-white/[0.18] text-white/60 hover:text-white text-sm font-medium px-4 py-2.5 rounded-xl transition-all duration-300 cursor-pointer"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+            </svg>
+            {linkCopied ? "¡Link copiado!" : "Compartir tienda"}
+          </button>
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="flex items-center gap-2 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/25 text-white text-sm font-medium px-5 py-2.5 rounded-xl transition-all duration-300 cursor-pointer"
+          >
+            <span className="text-lg leading-none">+</span>
+            Nueva orden
+          </button>
+        </div>
       </header>
 
       <div className="px-12 py-10 relative z-10">
@@ -114,7 +143,7 @@ export default function Orders() {
           <div className="flex items-center gap-3">
             {/* Filtro status */}
             <div className="flex gap-1 bg-white/[0.03] border border-white/[0.08] rounded-xl p-1">
-              {["all", "pending", "accepted", "cancelled"].map((s) => (
+              {["all", "pending", "accepted", "active", "delivered", "cancelled"].map((s) => (
                 <button
                   key={s}
                   onClick={() => setStatusFilter(s)}

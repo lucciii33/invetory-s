@@ -15,6 +15,14 @@ const statusConfig = {
     label: "Aceptada",
     classes: "bg-teal-500/10 text-teal-400 border-teal-500/20",
   },
+  active: {
+    label: "Activa",
+    classes: "bg-indigo-500/10 text-indigo-400 border-indigo-500/20",
+  },
+  delivered: {
+    label: "Entregada",
+    classes: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20",
+  },
   cancelled: {
     label: "Cancelada",
     classes: "bg-red-500/10 text-red-400 border-red-500/20",
@@ -338,6 +346,10 @@ export default function OrderDetail() {
                   <p className="text-sm text-white/30">
                     Esta orden fue cancelada y no puede modificarse.
                   </p>
+                ) : order.status === "delivered" ? (
+                  <p className="text-sm text-white/30">
+                    Esta orden fue entregada. No requiere más acciones.
+                  </p>
                 ) : (
                   <div className="flex flex-col gap-4">
                     {/* Accept warning */}
@@ -361,7 +373,8 @@ export default function OrderDetail() {
                       </div>
                     )}
 
-                    <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 flex-wrap">
+                      {/* PENDING → accept or cancel */}
                       {order.status === "pending" && (
                         <>
                           {!confirmAccept ? (
@@ -390,7 +403,6 @@ export default function OrderDetail() {
                               </button>
                             </>
                           )}
-
                           {!confirmAccept && (
                             <button
                               onClick={() => handleStatusChange("cancelled")}
@@ -403,18 +415,48 @@ export default function OrderDetail() {
                         </>
                       )}
 
+                      {/* ACCEPTED → mark active or cancel */}
                       {order.status === "accepted" && (
-                        <button
-                          onClick={() => handleStatusChange("cancelled")}
-                          disabled={mutating}
-                          className="px-5 py-2.5 rounded-xl text-sm font-medium bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 hover:border-red-500/40 text-red-400 hover:text-red-300 transition-all duration-300 disabled:opacity-50 cursor-pointer"
-                        >
-                          {mutating ? "Procesando..." : "Cancelar orden"}
-                        </button>
+                        <>
+                          <button
+                            onClick={() => handleStatusChange("active")}
+                            disabled={mutating}
+                            className="px-5 py-2.5 rounded-xl text-sm font-medium bg-indigo-500/20 hover:bg-indigo-500/30 border border-indigo-500/30 hover:border-indigo-500/50 text-indigo-300 transition-all duration-300 disabled:opacity-50 cursor-pointer"
+                          >
+                            {mutating ? "Procesando..." : "Marcar como activa"}
+                          </button>
+                          <button
+                            onClick={() => handleStatusChange("cancelled")}
+                            disabled={mutating}
+                            className="px-5 py-2.5 rounded-xl text-sm font-medium bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 hover:border-red-500/40 text-red-400 hover:text-red-300 transition-all duration-300 disabled:opacity-50 cursor-pointer"
+                          >
+                            Cancelar orden
+                          </button>
+                        </>
+                      )}
+
+                      {/* ACTIVE → mark delivered or cancel */}
+                      {order.status === "active" && (
+                        <>
+                          <button
+                            onClick={() => handleStatusChange("delivered")}
+                            disabled={mutating}
+                            className="px-5 py-2.5 rounded-xl text-sm font-medium bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/30 hover:border-emerald-500/50 text-emerald-300 transition-all duration-300 disabled:opacity-50 cursor-pointer"
+                          >
+                            {mutating ? "Procesando..." : "Marcar como entregada"}
+                          </button>
+                          <button
+                            onClick={() => handleStatusChange("cancelled")}
+                            disabled={mutating}
+                            className="px-5 py-2.5 rounded-xl text-sm font-medium bg-red-500/10 hover:bg-red-500/20 border border-red-500/20 hover:border-red-500/40 text-red-400 hover:text-red-300 transition-all duration-300 disabled:opacity-50 cursor-pointer"
+                          >
+                            Cancelar orden
+                          </button>
+                        </>
                       )}
                     </div>
 
-                    {order.status === "accepted" && (
+                    {(order.status === "accepted" || order.status === "active") && (
                       <p className="text-xs text-white/25">
                         Al cancelar una orden aceptada, el inventario se
                         restaurará automáticamente.

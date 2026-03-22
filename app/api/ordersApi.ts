@@ -1,7 +1,7 @@
 import { getAuthToken } from "../../auth";
 import { useState } from "react";
 
-export type OrderStatus = "pending" | "accepted" | "cancelled";
+export type OrderStatus = "pending" | "accepted" | "active" | "delivered" | "cancelled";
 
 export interface OrderCustomer {
   name: string;
